@@ -56,7 +56,15 @@ public class Mesto1Test {
                 .put("/api/cards/{photoId}/likes", photoId) // Делаем PUT-запрос
                 .then().assertThat().statusCode(200); // Проверяем, что сервер вернул код 200
     }
-
+    @Test
+    @DisplayName("Check user name")
+    @Description("This test is for check current user's name.")
+    public void checkUserName() {
+        given()
+                .auth().oauth2(bearerToken) // Передаём токен для аутентификации
+                .get("/api/users/me") // Делаем GET-запрос
+                .then().assertThat().body("data.name", equalTo("Incorrect Name")); // Проверяем, что имя соответствует ожидаемому
+    }
     @Step("Delete like from the photo by id")
     private void deleteLikePhotoById(String photoId) {
         // Снять лайк с фотографии по photoId
